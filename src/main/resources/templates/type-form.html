@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Olivier Nocaudie">
+    <meta name="description" content="Beer Next Door">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BeerNextDoor</title>
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body>
+<div class="container">
+    <!-- Fragment Logo + boutons profile/logout-->
+    <div th:fragment="head" class="row">
+        <div class="three columns">
+            <div class="flex">
+                <a th:href="@{/user-profile}">Profil</a>
+            </div>
+        </div>
+        <div class="six columns">
+            <div class="logo-div">
+                <img class="logo-size" th:attr="src=@{/images/beer-next-door.png}">
+            </div>
+        </div>
+        <div class="three columns">
+            <div class="flex">
+                <a th:href="@{/out}">Déconnexion</a>
+            </div>
+        </div>
+    </div>
+    <!-- Fragment Nav dans le form-->
+    <div th:fragment="nav" class="row">
+        <div class="three columns">
+            <div class="flex">
+                <a th:href="@{/type-form}">TYPE</a>
+            </div>
+        </div>
+        <div class="three columns">
+            <div class="flex">
+                <a th:href="@{/brewery-form}">BRASSERIE</a>
+            </div>
+        </div>
+        <div class="three columns">
+            <div class="flex">
+                <a th:href="@{/beer-form}">BIERE</a>
+            </div>
+        </div>
+        <div class="three columns">
+            <div class="flex">
+                <a th:href="@{/store-form}">MAGASIN</a>
+            </div>
+        </div>
+    </div>
+    <!--formulaire en fonction de ce qu'on remplit-->
+    <div class="row">
+        <h3>TYPES</h3>
+    </div>
+    <div class="row">
+        <div class="four columns">
+            <h4>Créer/Modifier</h4>
+            <form>
+                <label for="typeOfBeer">Choisir</label>
+                <select class="u-full-width" id="typeOfBeer">
+                    <option value="0">Créer un type de bière</option>
+                    <option>les autres option à base de thymeleaf</option>
+                </select>
+                <input class="button-primary" type="submit" value="Go !"
+            </form>
+            <h4>Types existants</h4>
+            <ol>
+                <li>Types existants</li>
+                <li>Et les suivants</li>
+            </ol>
+        </div>
+        <div class="eight columns">
+            <h4>TH:TEXT</h4>
+            <form>
+                <label for="typeName">Entrer/Modifier un type</label>
+                <input class="u-full-width" id="typeName" type="text" placeholder="Nom du type">
+                <input class="button-primary" type="submit" value="Go !">
+            </form>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
