@@ -16,31 +16,22 @@
 <div class="container">
     <div th:replace="fragment.html :: head"></div>
     <div class="row">
-        <div class="twelve columns">
-            <p>Mais qu'est-ce donc que BND ? Holala, mais c'est vraiment trop intéressant ! Lorem ipsum dolore et
-                cetera !  Lorem ipsum dolore et cetera  Lorem ipsum dolore et cetera  Lorem ipsum dolore et cetera
-                Lorem ipsum dolore et cetera</p>
-        </div>
+        <h2>User Log In</h2>
     </div>
     <div class="row">
-        <div class="six columns">
-            <a th:href="@{/log}">Login</a>
-        </div>
-        <div class="six columns">
-            <a th:href="@{/sign}">Sign Up</a>
-        </div>
+        <a th:href="@{/sign}">I don't have an account yet</a>
     </div>
     <div class="row">
-        <div class="four columns">
-            <p>C'est le menu de navigation dans la documentation</p>
-        </div>
-        <div class="eight columns">
-            <p>C'est la documentation</p>
-        </div>
+        <form th:action="@{/connexion}" method="post">
+            <label for="nameUser">User Name</label>
+            <input type="text" id="nameUser" name="nameUser"/>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"/>
+            <input type="submit" value="Go" name="logInUser">
+        </form>
     </div>
     <!-- Fragment Footer-->
     <div th:replace="fragment.html :: footer"></div>
 </div>
-
 </body>
 </html>
