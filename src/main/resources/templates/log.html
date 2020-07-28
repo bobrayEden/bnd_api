@@ -13,6 +13,25 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body>
-
+<div class="container">
+    <div th:replace="fragment.html :: head"></div>
+    <div class="row">
+        <h2>User Log In</h2>
+    </div>
+    <div class="row">
+        <a th:href="@{/sign}">I don't have an account yet</a>
+    </div>
+    <div class="row">
+        <form th:action="@{/connexion}" method="post">
+            <label for="nameUser">User Name</label>
+            <input type="text" id="nameUser" name="nameUser"/>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"/>
+            <input type="submit" value="Go" name="logInUser">
+        </form>
+    </div>
+    <!-- Fragment Footer-->
+    <div th:replace="fragment.html :: footer"></div>
+</div>
 </body>
 </html>

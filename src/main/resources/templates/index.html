@@ -10,17 +10,11 @@
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <div class="two columns"><p>Pourquoi donc n'y a-t-il rien ici ?</p></div>
-        <div class="eight columns">
-            <h1>Beer Next Door: API</h1>
-        </div>
-        <div class="two columns">
-        </div>
-    </div>
+    <div th:replace="fragment.html :: head"></div>
     <div class="row">
         <div class="twelve columns">
             <p>Mais qu'est-ce donc que BND ? Holala, mais c'est vraiment trop intéressant ! Lorem ipsum dolore et
@@ -30,10 +24,10 @@
     </div>
     <div class="row">
         <div class="six columns">
-            <a th:href="@{/login}">Login</a>
+            <a th:href="@{/log}">Login</a>
         </div>
         <div class="six columns">
-            <a th:href="@{/sign-up}">Sign Up</a>
+            <a th:href="@{/sign}">Sign Up</a>
         </div>
     </div>
     <div class="row">
@@ -44,6 +38,8 @@
             <p>C'est la documentation</p>
         </div>
     </div>
+    <!-- Fragment Footer-->
+    <div th:replace="fragment.html :: footer"></div>
 </div>
 
 </body>

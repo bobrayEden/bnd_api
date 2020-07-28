@@ -13,6 +13,29 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body>
-
+<div class="container">
+    <div th:replace="fragment.html :: head"></div>
+    <div class="row">
+        <h2>Account creation</h2>
+    </div>
+    <div class="row">
+        <a  th:href="@{/log}">I already have an account</a>
+    </div>
+    <div class="row">
+        <form th:action="@{/sign-in}" method="post" th:object="${user}">
+            <label th:for="nameUser">User Name</label>
+            <input type="text" th:field="*{nameUser}"/>
+            <label th:for="email">E-mail</label>
+            <input type="text" th:field="*{email}"/>
+            <label th:for="password">Password</label>
+            <input type="password" th:field="*{password}"/>
+            <label for="confirmPass">Password confirmation</label>
+            <input id="confirmPass" type="password" name="confirmPass"/>
+            <input type="submit" value="Go" name="registerUser">
+        </form>
+    </div>
+    <!-- Fragment Footer-->
+    <div th:replace="fragment.html :: footer"></div>
+</div>
 </body>
 </html>

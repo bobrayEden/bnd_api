@@ -15,12 +15,14 @@
 <body>
 <div class="container">
     <!--Fragment Top-->
-    <div th:replace="type-form.html :: head"></div>
+    <div th:replace="fragment.html :: head-logged"></div>
     <!--Fragment Nav-->
-    <div th:replace="type-form.html :: nav"></div>
+    <div th:replace="fragment.html :: nav"></div>
     <div class="row">
 
     </div>
+    <!-- Fragment Footer-->
+    <div th:replace="fragment.html :: footer"></div>
 </div>
 </body>
 </html>

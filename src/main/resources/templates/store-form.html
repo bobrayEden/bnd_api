@@ -15,9 +15,9 @@
 <body>
 <div class="container">
     <!--Fragment Top-->
-    <div th:replace="type-form.html :: head"></div>
+    <div th:replace="fragment.html :: head-logged"></div>
     <!--Fragment Nav-->
-    <div th:replace="type-form.html :: nav"></div>
+    <div th:replace="fragment.html :: nav"></div>
     <!-- Formulaire -->
     <div class="row">
         <h3>MAGASINS</h3>
@@ -31,7 +31,7 @@
                     <option value="0">Créer un magasin</option>
                     <option>les autres option à base de thymeleaf</option>
                 </select>
-                <input class="button-primary" type="submit" value="Go !"
+                <input class="button-primary" type="submit" value="Go !">
             </form>
             <h4>Magasins existants</h4>
             <ol>
@@ -49,7 +49,8 @@
         </div>
 
     </div>
-
+    <!-- Fragment Footer-->
+    <div th:replace="fragment.html :: footer"></div>
 </div>
 </body>
 </html>

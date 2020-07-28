@@ -16,3 +16,9 @@
     justify-content: center;
     align-items: center;
 }
+
+.flex-title {
+    height: 150px;
+    display: flex;
+    align-items: center;
+}
