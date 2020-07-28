@@ -28,15 +28,16 @@
             <form>
                 <label for="brewery">Choisir</label>
                 <select class="u-full-width" id="brewery">
-                    <option value="0">Créer une brasserie</option>
-                    <option>les autres option à base de thymeleaf</option>
+                    <option selected value="0">Créer une brasserie</option>
+                    <option th:each="brewery : ${breweries}"
+                            th:value="${brewery.getIdBrewery()}"
+                            th:text="${brewery.getNameBrewery()}"></option>
                 </select>
                 <input class="button-primary" type="submit" value="Go !">
             </form>
-            <h4>Brasseries existants</h4>
+            <h4>Brasseries existantes</h4>
             <ol>
-                <li>Brasserie 1</li>
-                <li>Et les suivantes</li>
+                <li th:each="brewery : ${breweries}" th:text="${brewery.getNameBrewery()}"></li>
             </ol>
         </div>
         <div class="eight columns">

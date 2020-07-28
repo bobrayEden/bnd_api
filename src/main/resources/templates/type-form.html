@@ -28,15 +28,17 @@
             <form>
                 <label for="typeOfBeer">Choisir</label>
                 <select class="u-full-width" id="typeOfBeer">
-                    <option value="0">Créer un type de bière</option>
-                    <option>les autres option à base de thymeleaf</option>
+                    <option selected value="0">Créer un type de bière</option>
+                    <option th:each="type : ${types}"
+                            th:value="${type.getIdType()}"
+                            th:text="${type.getNameType()}">
+                    </option>
                 </select>
                 <input class="button-primary" type="submit" value="Go !">
             </form>
             <h4>Types existants</h4>
             <ol>
-                <li>Types existants</li>
-                <li>Et les suivants</li>
+                <li th:each="type : ${types}" th:text="${type.getNameType()}"></li>
             </ol>
         </div>
         <div class="eight columns">

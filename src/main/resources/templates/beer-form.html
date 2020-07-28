@@ -28,21 +28,23 @@
             <form>
                 <label for="beer">Choisir</label>
                 <select class="u-full-width" id="beer">
-                    <option value="0">Créer une bière</option>
-                    <option>les autres option à base de thymeleaf</option>
+                    <option selected value="0">Créer une bière</option>
+                    <option th:each="beer : ${beers}"
+                            th:value="${beer.getIdBeer()}"
+                            th:text="${beer.getNameBeer()}">
+                    </option>
                 </select>
                 <input class="button-primary" type="submit" value="Go !">
             </form>
             <h4>Bières existantes</h4>
             <ol>
-                <li>Bière 1</li>
-                <li>Et les suivantes</li>
+                <li th:each="beer : ${beers}" th:text="${beer.getNameBeer()}"></li>
             </ol>
         </div>
         <div class="eight columns">
             <h4>TH:TEXT</h4>
             <form>
-                <label for="beerName">Entrer/Modifier un magasin</label>
+                <label for="beerName">Entrer/Modifier une bière</label>
                 <input class="u-full-width" id="beerName" type="text" placeholder="Nom du magasin">
                 <input class="button-primary" type="submit" value="Go !">
             </form>

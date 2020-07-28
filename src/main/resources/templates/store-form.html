@@ -28,15 +28,16 @@
             <form>
                 <label for="store">Choisir</label>
                 <select class="u-full-width" id="store">
-                    <option value="0">Créer un magasin</option>
-                    <option>les autres option à base de thymeleaf</option>
+                    <option selected value="0">Créer un magasin</option>
+                    <option th:each="store : ${stores}"
+                            th:value="${store.getIdStore()}"
+                            th:text="${store.getNameStore()}"></option>
                 </select>
                 <input class="button-primary" type="submit" value="Go !">
             </form>
             <h4>Magasins existants</h4>
             <ol>
-                <li>Magasin 1</li>
-                <li>Et les suivants</li>
+                <li th:each="store : ${stores}" th:text="${store.getNameStore()}"></li>
             </ol>
         </div>
         <div class="eight columns">
