@@ -13,46 +13,51 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body>
-<div class="container">
-    <!--Fragment Top-->
-    <div th:replace="fragment.html :: head-logged"></div>
-    <!--Fragment Nav-->
-    <div th:replace="fragment.html :: nav"></div>
-    <!--formulaire en fonction de ce qu'on remplit-->
-    <div class="row">
-        <h3>TYPES</h3>
-    </div>
-    <div class="row">
-        <div class="four columns">
-            <h4>Créer/Modifier</h4>
-            <form>
-                <label for="typeOfBeer">Choisir</label>
-                <select class="u-full-width" id="typeOfBeer">
-                    <option selected value="0">Créer un type de bière</option>
-                    <option th:each="type : ${types}"
-                            th:value="${type.getIdType()}"
-                            th:text="${type.getNameType()}">
-                    </option>
-                </select>
-                <input class="button-primary" type="submit" value="Go !">
-            </form>
-            <h4>Types existants</h4>
-            <ol>
-                <li th:each="type : ${types}" th:text="${type.getNameType()}"></li>
-            </ol>
+<!--Fragment Top-->
+<div th:replace="fragment.html :: head-logged"></div>
+<!--Fragment Nav-->
+<div th:replace="fragment.html :: nav"></div>
+<!--formulaire en fonction de ce qu'on remplit-->
+<div class="section-mid">
+    <div class="container">
+        <div class="row">
+            <h3>TYPES</h3>
         </div>
-        <div class="eight columns">
-            <h4>TH:TEXT</h4>
-            <form>
-                <label for="typeName">Entrer/Modifier un type</label>
-                <input class="u-full-width" id="typeName" type="text" placeholder="Nom du type">
-                <input class="button-primary" type="submit" value="Go !">
-            </form>
+        <div class="row">
+            <div class="four columns">
+                <h4>Créer/Modifier</h4>
+                <form>
+                    <label for="typeOfBeer">Choisir</label>
+                    <select class="u-full-width" id="typeOfBeer">
+                        <option selected value="0">Créer un type de bière</option>
+                        <option th:each="type : ${types}"
+                                th:value="${type.getIdType()}"
+                                th:text="${type.getNameType()}">
+                        </option>
+                    </select>
+                    <input class="button-primary" type="submit" value="Go !">
+                </form>
+            </div>
+            <div class="eight columns">
+                <h4>TH:TEXT</h4>
+                <form>
+                    <label for="typeName">Entrer/Modifier un type</label>
+                    <input class="u-full-width" id="typeName" type="text" placeholder="Nom du type">
+                    <input class="button-primary" type="submit" value="Go !">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="twelve columns">
+                <h4>Types existants</h4>
+                <ol>
+                    <li th:each="type : ${types}" th:text="${type.getNameType()}"></li>
+                </ol>
+            </div>
         </div>
     </div>
-    <!-- Fragment Footer-->
-    <div th:replace="fragment.html :: footer"></div>
 </div>
-
+<!-- Fragment Footer-->
+<div th:replace="fragment.html :: footer"></div>
 </body>
 </html>

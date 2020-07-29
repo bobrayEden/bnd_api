@@ -13,46 +13,60 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body>
-<div class="container">
-    <!-- Head Unlog-->
-    <div th:fragment="head" class="row">
-        <div class="four columns">
-            <div class="logo-div">
-                <img class="logo-size" th:attr="src=@{/images/beer-next-door.png}">
+<!-- Head Unlog-->
+<div th:fragment="head" class="section">
+    <div class="container">
+        <div class="row">
+            <div class="four columns">
+                <div class="logo-div">
+                    <img class="logo-size" th:attr="src=@{/images/beer-next-door.png}">
+                </div>
+            </div>
+            <div class="eight columns flex-title">
+                <h1>Beer Next Door: API</h1>
             </div>
         </div>
-        <div class="eight columns flex-title">
-            <h1>Beer Next Door: API</h1>
-        </div>
     </div>
+</div>
 
-    <!-- Footer-->
-    <div th:fragment="footer" class="row">
-        <div class="twelve columns">
-            <p>C'est le footer. Lorem ipsum dolore raht loukoum et tutti quanti ragazzi. C'est le footer. Lorem ipsum
-                dolore raht loukoum et tutti quanti ragazzi. C'est le footer. Lorem ipsum dolore raht loukoum et tutti
-                quanti ragazzi. C'est le footer. Lorem ipsum dolore raht loukoum et tutti quanti ragazzi. C'est le
-                footer. Lorem ipsum dolore raht loukoum et tutti quanti ragazzi. </p>
-        </div>
-    </div>
-
-    <!-- Head Logged-->
-    <div th:fragment="head-logged" class="row">
-        <div class="three columns flex">
-            <a th:href="@{/user-profile}">Profil</a>
-        </div>
-        <div class="six columns">
-            <div class="logo-div">
-                <img class="logo-size" th:attr="src=@{/images/beer-next-door.png}">
+<!-- Footer-->
+<div th:fragment="footer" class="section">
+    <div class="container">
+        <div class="row">
+            <div class="twelve columns">
+                <p>C'est le footer. Lorem ipsum dolore raht loukoum et tutti quanti ragazzi. C'est le footer. Lorem
+                    ipsum
+                    dolore raht loukoum et tutti quanti ragazzi. C'est le footer. Lorem ipsum dolore raht loukoum et
+                    tutti
+                    quanti ragazzi. C'est le footer. Lorem ipsum dolore raht loukoum et tutti quanti ragazzi. C'est le
+                    footer. Lorem ipsum dolore raht loukoum et tutti quanti ragazzi. </p>
             </div>
         </div>
-        <div class="three columns flex">
-            <a th:href="@{/out}">Déconnexion</a>
+    </div>
+</div>
+
+<!-- Head Logged-->
+<div th:fragment="head-logged" class="section">
+    <div class="container">
+        <div class="row">
+            <div class="three columns flex">
+                <a th:href="@{/user-profile}">Profil</a>
+            </div>
+            <div class="six columns">
+                <div class="logo-div">
+                    <img class="logo-size" th:attr="src=@{/images/beer-next-door.png}">
+                </div>
+            </div>
+            <div class="three columns flex">
+                <a th:href="@{/out}">Déconnexion</a>
+            </div>
         </div>
     </div>
+</div>
 
-    <!-- Nav Logged-->
-    <div th:fragment="nav" class="row">
+<!-- Nav Logged-->
+<div th:fragment="nav" class="container">
+    <div class="row">
         <div class="three columns">
             <div class="flex">
                 <a th:href="@{/type-form}">TYPE</a>

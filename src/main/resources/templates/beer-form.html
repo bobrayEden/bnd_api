@@ -13,45 +13,51 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body>
-<div class="container">
-    <!--Fragment Top-->
-    <div th:replace="fragment.html :: head-logged"></div>
-    <!--Fragment Nav-->
-    <div th:replace="fragment.html :: nav"></div>
-    <!-- Formulaire -->
-    <div class="row">
-        <h3>BIERES</h3>
-    </div>
-    <div class="row">
-        <div class="four columns">
-            <h4>Créer/Modifier</h4>
-            <form>
-                <label for="beer">Choisir</label>
-                <select class="u-full-width" id="beer">
-                    <option selected value="0">Créer une bière</option>
-                    <option th:each="beer : ${beers}"
-                            th:value="${beer.getIdBeer()}"
-                            th:text="${beer.getNameBeer()}">
-                    </option>
-                </select>
-                <input class="button-primary" type="submit" value="Go !">
-            </form>
-            <h4>Bières existantes</h4>
-            <ol>
-                <li th:each="beer : ${beers}" th:text="${beer.getNameBeer()}"></li>
-            </ol>
+<!--Fragment Top-->
+<div th:replace="fragment.html :: head-logged"></div>
+<!--Fragment Nav-->
+<div th:replace="fragment.html :: nav"></div>
+<!-- Formulaire -->
+<div class="section-mid">
+    <div class="container">
+        <div class="row">
+            <h3>BIERES</h3>
         </div>
-        <div class="eight columns">
-            <h4>TH:TEXT</h4>
-            <form>
-                <label for="beerName">Entrer/Modifier une bière</label>
-                <input class="u-full-width" id="beerName" type="text" placeholder="Nom du magasin">
-                <input class="button-primary" type="submit" value="Go !">
-            </form>
+        <div class="row">
+            <div class="four columns">
+                <h4>Créer/Modifier</h4>
+                <form>
+                    <label for="beer">Choisir</label>
+                    <select class="u-full-width" id="beer">
+                        <option selected value="0">Créer une bière</option>
+                        <option th:each="beer : ${beers}"
+                                th:value="${beer.getIdBeer()}"
+                                th:text="${beer.getNameBeer()}">
+                        </option>
+                    </select>
+                    <input class="button-primary" type="submit" value="Go !">
+                </form>
+            </div>
+            <div class="eight columns">
+                <h4>TH:TEXT</h4>
+                <form>
+                    <label for="beerName">Entrer/Modifier une bière</label>
+                    <input class="u-full-width" id="beerName" type="text" placeholder="Nom du magasin">
+                    <input class="button-primary" type="submit" value="Go !">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="twelve columns">
+                <h4>Bières existantes</h4>
+                <ol>
+                    <li th:each="beer : ${beers}" th:text="${beer.getNameBeer()}"></li>
+                </ol>
+            </div>
         </div>
     </div>
-    <!-- Fragment Footer-->
-    <div th:replace="fragment.html :: footer"></div>
 </div>
+<!-- Fragment Footer-->
+<div th:replace="fragment.html :: footer"></div>
 </body>
 </html>

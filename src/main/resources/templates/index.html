@@ -13,34 +13,44 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body>
-<div class="container">
-    <div th:replace="fragment.html :: head"></div>
-    <div class="row">
-        <div class="twelve columns">
-            <p>Mais qu'est-ce donc que BND ? Holala, mais c'est vraiment trop intéressant ! Lorem ipsum dolore et
-                cetera !  Lorem ipsum dolore et cetera  Lorem ipsum dolore et cetera  Lorem ipsum dolore et cetera
-                Lorem ipsum dolore et cetera</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="six columns">
-            <a th:href="@{/log}">Login</a>
-        </div>
-        <div class="six columns">
-            <a th:href="@{/sign}">Sign Up</a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="four columns">
-            <p>C'est le menu de navigation dans la documentation</p>
-        </div>
-        <div class="eight columns">
-            <p>C'est la documentation</p>
-        </div>
-    </div>
-    <!-- Fragment Footer-->
-    <div th:replace="fragment.html :: footer"></div>
-</div>
 
+<div th:replace="fragment.html :: head"></div>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="twelve columns">
+                <p>Mais qu'est-ce donc que BND ? Holala, mais c'est vraiment trop intéressant ! Lorem ipsum dolore et
+                    cetera ! Lorem ipsum dolore et cetera Lorem ipsum dolore et cetera Lorem ipsum dolore et cetera
+                    Lorem ipsum dolore et cetera</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="six columns">
+                <a th:href="@{/log}">Login</a>
+            </div>
+            <div class="six columns">
+                <a th:href="@{/sign}">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="four columns">
+                <p>C'est le menu de navigation dans la documentation</p>
+            </div>
+            <div class="eight columns">
+                <p>C'est la documentation</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fragment Footer-->
+<div th:replace="fragment.html :: footer"></div>
 </body>
 </html>
