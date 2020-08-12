@@ -40,9 +40,9 @@
             </div>
             <div class="eight columns">
                 <h4>TH:TEXT</h4>
-                <form>
-                    <label for="breweryName">Entrer/Modifier une brasserie</label>
-                    <input class="u-full-width" id="breweryName" type="text" placeholder="Nom de la brasserie">
+                <form th:action="@{/post-brewery}" th:object="${newBrewery}" method="post">
+                    <label th:for="nameBrewery">Entrer/Modifier une brasserie</label>
+                    <input class="u-full-width" th:field="*{nameBrewery}" type="text" placeholder="Nom de la brasserie">
                     <input class="button-primary" type="submit" value="Go !">
                 </form>
             </div>

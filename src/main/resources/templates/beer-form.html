@@ -40,9 +40,25 @@
             </div>
             <div class="eight columns">
                 <h4>TH:TEXT</h4>
-                <form>
-                    <label for="beerName">Entrer/Modifier une bière</label>
-                    <input class="u-full-width" id="beerName" type="text" placeholder="Nom du magasin">
+
+                <label for="breweries">Choisir une brasserie</label>
+                <select class="u-full-width" id="breweries" name="breweries">
+                    <option th:each="breweryItem : ${breweries}"
+                            th:value="${breweryItem.getIdBrewery()}"
+                            th:text="${breweryItem.getNameBrewery()}">
+                    </option>
+                </select>
+                <label for="types">Choisir un type de bière</label>
+                <select class="u-full-width" id="types" name="types">
+                    <option selected value="O">Choisir un type</option>
+                    <option th:each="typeItem : ${types}"
+                    th:value="${typeItem.getIdType()}"
+                    th:text="${typeItem.getNameType()}">
+                </option>
+                </select>
+                <form th:action="@{/post-beer}" method="post" th:object="${newBeer}">
+                    <label th:for="nameBeer">Entrer/Modifier un type</label>
+                    <input class="u-full-width" th:field="*{nameBeer}" type="text" placeholder="Nom de la bière">
                     <input class="button-primary" type="submit" value="Go !">
                 </form>
             </div>
@@ -51,7 +67,7 @@
             <div class="twelve columns">
                 <h4>Bières existantes</h4>
                 <ol>
-                    <li th:each="beer : ${beers}" th:text="${beer.getNameBeer()}"></li>
+                    <li th:each="beer : ${beers}" th:text="${beer.getNameBeer() + ' ' + beer.getBrewery().getNameBrewery()}"></li>
                 </ol>
             </div>
         </div>
