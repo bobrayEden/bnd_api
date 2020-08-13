@@ -5,15 +5,12 @@ import com.bobray.beernextdoor.repository.BeerRepository;
 import com.bobray.beernextdoor.repository.BreweryRepository;
 import com.bobray.beernextdoor.repository.StoreRepository;
 import com.bobray.beernextdoor.repository.TypeRepository;
-import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class TemplateController {
@@ -128,26 +125,22 @@ public class TemplateController {
 
     @PostMapping("/post-beer")
     public String postNewBeer(Model out,
-                              @ModelAttribute Beer newBeer,
-                              @RequestParam(required = false, defaultValue = "1") Long idType,
-                              @RequestParam(required = false, defaultValue = "1") Long idBrewery) {
+                              @ModelAttribute Beer newBeer) {
 
         out.addAttribute("newBeer", newBeer);
         List<Beer> beers = beerRepository.findAll();
         out.addAttribute("beers", beers);
-       /* out.addAttribute("idType", idType);
-        out.addAttribute("idBrewery", idBrewery);*/
-        //TODO request params
+
         if (newBeer.getNameBeer() != null) {
 
             if (beerRepository.findByNameBeer(newBeer.getNameBeer()).isPresent()) {
                 return "redirect:/beer-form";
             }
 
-            Brewery currentBrewery = breweryRepository.findById(idBrewery).get();
+            Brewery currentBrewery = breweryRepository.findById(newBeer.getBrewery().getIdBrewery()).get();
             newBeer.setBrewery(currentBrewery);
 
-            Type currentType = typeRepository.findById(idType).get();
+            Type currentType = typeRepository.findById(newBeer.getType().getIdType()).get();
             newBeer.setType(currentType);
 
             beerRepository.save(newBeer);
