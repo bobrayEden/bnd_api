@@ -22,3 +22,11 @@
     display: flex;
     align-items: center;
 }
+
+.section {
+    padding: 5rem 0;
+}
+
+.section-mid {
+    padding: 0 0 5rem 0;
+}

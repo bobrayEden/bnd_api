@@ -13,16 +13,35 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body>
-<div class="container">
-    <!--Fragment Top-->
-    <div th:replace="fragment.html :: head-logged"></div>
-    <!--Fragment Nav-->
-    <div th:replace="fragment.html :: nav"></div>
-    <div class="row">
-
+<!--Fragment Top-->
+<div th:replace="fragment.html :: head-logged"></div>
+<!--Fragment Nav-->
+<div th:replace="fragment.html :: nav"></div>
+<div class="section-mid">
+    <div class="container">
+        <div class="row">
+            <h3>Profil utilisateur</h3>
+        </div>
+        <div class="row">
+            <form>
+                <div class="six columns">
+                    <label for="userName">Nom d'utilisateur</label>
+                    <input id="userName" type="text" placeholder="Georges">
+                    <label for="userMail">E-mail</label>
+                    <input id="userMail" type="email" placeholder="georges@georges.com">
+                </div>
+                <div class="six columns">
+                    <label for="password">Mot de passe</label>
+                    <input id="password" type="password">
+                    <label for="confirmPass">Confirmer le mot de passe</label>
+                    <input id="confirmPass" type="password">
+                </div>
+                <input class="button-primary" type="submit" value="Go !">
+            </form>
+        </div>
     </div>
-    <!-- Fragment Footer-->
-    <div th:replace="fragment.html :: footer"></div>
 </div>
+<!-- Fragment Footer-->
+<div th:replace="fragment.html :: footer"></div>
 </body>
 </html>
