@@ -52,8 +52,24 @@ public class TemplateController {
     }
 
     @PostMapping("/connexion")
-    public String connexion() {
-        return "redirect:/type-form";
+    public String connexion(@RequestParam String nameUser,
+                            @RequestParam String password) {
+
+        Optional<User> userOptional = userRepository.findByNameUser(nameUser);
+        Optional<User> userOptionalMail = userRepository.findByEmail(nameUser);
+        if (userOptional.isPresent() || userOptionalMail.isPresent()) {
+            User user;
+            //TODO gestion d'erreur + sécu
+            if (userOptional.isPresent()) {
+                user = userOptional.get();
+            } else {
+                user = userOptionalMail.get();
+            }
+            if (password.equals(user.getPassword())) {
+                return "redirect:/type-form";
+            }
+        }
+        return "redirect:/log";
     }
 
     @PostMapping("sign-in")
