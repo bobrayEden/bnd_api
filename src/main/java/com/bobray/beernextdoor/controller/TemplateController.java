@@ -1,16 +1,15 @@
 package com.bobray.beernextdoor.controller;
 
 import com.bobray.beernextdoor.entity.*;
-import com.bobray.beernextdoor.repository.BeerRepository;
-import com.bobray.beernextdoor.repository.BreweryRepository;
-import com.bobray.beernextdoor.repository.StoreRepository;
-import com.bobray.beernextdoor.repository.TypeRepository;
+import com.bobray.beernextdoor.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class TemplateController {
@@ -26,6 +25,9 @@ public class TemplateController {
 
     @Autowired
     BeerRepository beerRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/")
     public String getIndex() {
@@ -51,6 +53,36 @@ public class TemplateController {
 
     @PostMapping("/connexion")
     public String connexion() {
+        return "redirect:/type-form";
+    }
+
+    @PostMapping("sign-in")
+    public String signIn(Model out,
+                         @ModelAttribute User user,
+                         @RequestParam String confirmPass) {
+        out.addAttribute("user", user);
+
+        //TODO gestion d'erreurs
+        if (user.getNameUser() != null) {
+            Optional<User> userOptional = userRepository.findByNameUser(user.getNameUser());
+            if (userOptional.isPresent()) {
+                return "redirect:/sign";
+            }
+
+            userOptional = userRepository.findByEmail(user.getEmail());
+            if (userOptional.isPresent()) {
+                return "redirect:/sign";
+            }
+
+            if (user.getNameUser().trim().equals("")) {
+                return "redirect:/sign";
+            }
+
+            if (!user.getPassword().equals(confirmPass)) {
+                return "redirect:/sign";
+            }
+            userRepository.save(user);
+        }
         return "redirect:/type-form";
     }
 
