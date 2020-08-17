@@ -23,18 +23,18 @@
             <h3>Profil utilisateur</h3>
         </div>
         <div class="row">
-            <form>
+            <form th:action="@{/update-profile}" method="post" th:object="${user}">
                 <div class="six columns">
-                    <label for="userName">Nom d'utilisateur</label>
-                    <input id="userName" type="text" placeholder="Georges">
-                    <label for="userMail">E-mail</label>
-                    <input id="userMail" type="email" placeholder="georges@georges.com">
+                    <label th:for="nameUser">Nom d'utilisateur</label>
+                    <input type="text" th:field="*{nameUser}" placeholder="Georges">
+                    <label th:for="email">E-mail</label>
+                    <input type="email" th:field="*{email}" placeholder="georges@georges.com">
                 </div>
                 <div class="six columns">
                     <label for="password">Mot de passe</label>
-                    <input id="password" type="password">
+                    <input id="password" type="password" name="password">
                     <label for="confirmPass">Confirmer le mot de passe</label>
-                    <input id="confirmPass" type="password">
+                    <input id="confirmPass" type="password" name="confirmPass">
                 </div>
                 <input class="button-primary" type="submit" value="Go !">
             </form>

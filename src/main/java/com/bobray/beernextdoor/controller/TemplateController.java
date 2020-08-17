@@ -2,18 +2,25 @@ package com.bobray.beernextdoor.controller;
 
 import com.bobray.beernextdoor.entity.*;
 import com.bobray.beernextdoor.repository.*;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class TemplateController {
 
+    //Repos
     @Autowired
     TypeRepository typeRepository;
 
@@ -29,6 +36,7 @@ public class TemplateController {
     @Autowired
     UserRepository userRepository;
 
+    //Mappings
     @GetMapping("/")
     public String getIndex() {
         return "index";
@@ -52,7 +60,9 @@ public class TemplateController {
     }
 
     @PostMapping("/connexion")
-    public String connexion(@RequestParam String nameUser,
+    public String connexion(HttpServletResponse response,
+                            HttpSession session,
+                            @RequestParam String nameUser,
                             @RequestParam String password) {
 
         Optional<User> userOptional = userRepository.findByNameUser(nameUser);
@@ -66,14 +76,18 @@ public class TemplateController {
                 user = userOptionalMail.get();
             }
             if (password.equals(user.getPassword())) {
+                user = getConnected(user, response);
+                session.setAttribute("user", user);
                 return "redirect:/type-form";
             }
         }
-        return "redirect:/log";
+        return "log";
     }
 
     @PostMapping("sign-in")
     public String signIn(Model out,
+                         HttpServletResponse response,
+                         HttpSession session,
                          @ModelAttribute User user,
                          @RequestParam String confirmPass) {
         out.addAttribute("user", user);
@@ -97,14 +111,48 @@ public class TemplateController {
             if (!user.getPassword().equals(confirmPass)) {
                 return "redirect:/sign";
             }
-            userRepository.save(user);
+            user.setApiKey(RandomStringUtils.randomAlphanumeric(20));
+            user = getConnected(user, response);
+            session.setAttribute("user", user);
         }
         return "redirect:/type-form";
     }
 
     @GetMapping("/user-profile")
-    public String getProfile() {
+    public String getProfile(Model out,
+                             HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        out.addAttribute("user", user);
+
         return "user-profile";
+    }
+
+    @PostMapping("/update-profile")
+    public String updateProfile(Model out,
+                                HttpSession session,
+                                @RequestParam String nameUser,
+                                @RequestParam String email,
+                                @RequestParam String password,
+                                @RequestParam String confirmPass) {
+
+        User user = (User) session.getAttribute("user");
+        out.addAttribute("user", user);
+
+        //TODO gestion de l'erreur
+        if (!password.equals("") && password.equals(confirmPass)) {
+            user.setPassword(password);
+        }
+
+        if (!nameUser.equals(user.getNameUser())) {
+            user.setNameUser(nameUser);
+        }
+
+        if (!email.equals(user.getEmail())) {
+            user.setEmail(email);
+        }
+        userRepository.saveAndFlush(user);
+        session.setAttribute("user", user);
+        return "redirect:/user-profile";
     }
 
     @GetMapping("/type-form")
@@ -223,7 +271,28 @@ public class TemplateController {
     }
 
     @GetMapping("/out")
-    public String getOut() {
+    public String getOut(HttpSession session) {
+        session.removeAttribute("user");
         return "redirect:/";
+    }
+
+    //Methods
+    public User getConnected(User user, HttpServletResponse response) {
+        String sessionToken = RandomStringUtils.randomAlphanumeric(30);
+        user.setToken(sessionToken);
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH, 1);
+        user.setTokenExpiration(c.getTime());
+        Cookie tokenSession = new Cookie("sessionId", user.getToken());
+        tokenSession.setMaxAge(24 * 60 * 60);
+        response.addCookie(tokenSession);
+        userRepository.save(user);
+        return user;
+    }
+
+    public boolean sessionCheck(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        return user == null;
     }
 }
