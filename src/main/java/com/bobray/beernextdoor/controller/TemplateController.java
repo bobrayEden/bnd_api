@@ -6,7 +6,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -69,7 +68,6 @@ public class TemplateController {
         Optional<User> userOptionalMail = userRepository.findByEmail(nameUser);
         if (userOptional.isPresent() || userOptionalMail.isPresent()) {
             User user;
-            //TODO gestion d'erreur + sécu
             if (userOptional.isPresent()) {
                 user = userOptional.get();
             } else {
@@ -92,7 +90,6 @@ public class TemplateController {
                          @RequestParam String confirmPass) {
         out.addAttribute("user", user);
 
-        //TODO gestion d'erreurs
         if (user.getNameUser() != null) {
             Optional<User> userOptional = userRepository.findByNameUser(user.getNameUser());
             if (userOptional.isPresent()) {

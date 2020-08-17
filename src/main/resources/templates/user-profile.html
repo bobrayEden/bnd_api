@@ -31,8 +31,8 @@
                     <input type="email" th:field="*{email}" placeholder="georges@georges.com">
                 </div>
                 <div class="six columns">
-                    <label for="password">Mot de passe</label>
-                    <input id="password" type="password" name="password">
+                    <label th:for="password">Mot de passe</label>
+                    <input type="password" th:field="*{password}">
                     <label for="confirmPass">Confirmer le mot de passe</label>
                     <input id="confirmPass" type="password" name="confirmPass">
                 </div>
