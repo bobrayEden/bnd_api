@@ -30,3 +30,7 @@
 .section-mid {
     padding: 0 0 5rem 0;
 }
+
+td>p {
+    margin: 1.25rem 0;
+}
