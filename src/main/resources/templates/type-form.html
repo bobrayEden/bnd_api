@@ -51,9 +51,24 @@
         <div class="row">
             <div class="twelve columns">
                 <h4>Types existants</h4>
-                <ol>
-                    <li th:each="type : ${types}" th:text="${type.getNameType()}"></li>
-                </ol>
+                <table class="u-full-width">
+                    <thead>
+                    <tr>
+                        <th>Nom du type</th>
+                        <th>Bières dans le type (Une bière - Sa brasserie)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="type : ${types}">
+                        <td th:text="${type.getNameType()}"></td>
+                        <td>
+                            <p th:each="beer : ${type.getBeers()}">
+                                <span th:text="|${beer.getNameBeer()} - ${beer.getBrewery().getNameBrewery()}|"></span>
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
