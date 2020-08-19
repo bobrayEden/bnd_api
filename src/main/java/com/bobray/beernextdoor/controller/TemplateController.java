@@ -314,7 +314,8 @@ public class TemplateController {
     }
 
     //Methods
-    public User getConnected(User user, HttpServletResponse response) {
+    public User getConnected(User user,
+                             HttpServletResponse response) {
         String sessionToken = RandomStringUtils.randomAlphanumeric(30);
         user.setToken(sessionToken);
         Calendar c = Calendar.getInstance();
