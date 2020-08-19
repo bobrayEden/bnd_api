@@ -169,7 +169,13 @@ public class TemplateController {
     }
 
     @GetMapping("/type-form")
-    public String getTypeForm(Model out) {
+    public String getTypeForm(Model out,
+                              HttpSession session) {
+
+        if (sessionCheck(session)) {
+            return "redirect:/log";
+        }
+
         List<Type> types = typeRepository.findAll();
         out.addAttribute("types", types);
         out.addAttribute("newType", new Type());
@@ -195,7 +201,13 @@ public class TemplateController {
     }
 
     @GetMapping("/brewery-form")
-    public String getBreweryForm(Model out) {
+    public String getBreweryForm(Model out,
+                                 HttpSession session) {
+
+        if (sessionCheck(session)) {
+            return "redirect:/log";
+        }
+
         List<Brewery> breweries = breweryRepository.findAll();
         out.addAttribute("breweries", breweries);
         out.addAttribute("newBrewery", new Brewery());
@@ -221,7 +233,13 @@ public class TemplateController {
     }
 
     @GetMapping("/beer-form")
-    public String getBeerForm(Model out) {
+    public String getBeerForm(Model out,
+                              HttpSession session) {
+
+        if (sessionCheck(session)) {
+            return "redirect:/log";
+        }
+
         List<Beer> beers = beerRepository.findAll();
         List<Type> types = typeRepository.findAll();
         List<Brewery> breweries = breweryRepository.findAll();
@@ -258,7 +276,13 @@ public class TemplateController {
     }
 
     @GetMapping("/store-form")
-    public String getStoreForm(Model out) {
+    public String getStoreForm(Model out,
+                               HttpSession session) {
+
+        if (sessionCheck(session)) {
+            return "redirect:/log";
+        }
+
         List<Store> stores = storeRepository.findAll();
         out.addAttribute("stores", stores);
         out.addAttribute("newStore", new Store());
