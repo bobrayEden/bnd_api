@@ -1,7 +1,9 @@
 package com.bobray.beernextdoor.controller;
 
 import com.bobray.beernextdoor.entity.Beer;
+import com.bobray.beernextdoor.entity.User;
 import com.bobray.beernextdoor.repository.BeerRepository;
+import com.bobray.beernextdoor.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,9 @@ public class BeerController {
 
     @Autowired
     BeerRepository beerRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/beers")
     public List<Beer> getAllBeers() {
@@ -29,29 +34,44 @@ public class BeerController {
         return null;
     }
 
-    @PostMapping("/beers")
-    public Beer postBeer(@RequestBody Beer beer) {
-        return beerRepository.save(beer);
-    }
+    @PostMapping("/{apiKey}/beers")
+    public Beer postBeer(@RequestBody Beer beer,
+                         @PathVariable String apiKey) {
 
-    @PutMapping("/beers/{idBeer}")
-    public Beer putBeer(@PathVariable Long idBeer, @RequestBody Beer beer) {
-
-        Optional<Beer> beerOptional = beerRepository.findById(idBeer);
-        if (beerOptional.isPresent()) {
-            beer.setIdBeer(idBeer);
+        Optional<User> userOptional = userRepository.findUserByApiKey(apiKey);
+        if (userOptional.isPresent()) {
             return beerRepository.save(beer);
         }
         return null;
     }
 
-    @DeleteMapping("/beers/{idBeer}")
-    public boolean deleteBeer(@PathVariable Long idBeer) {
+    @PutMapping("/{apiKey}/beers/{idBeer}")
+    public Beer putBeer(@PathVariable Long idBeer,
+                        @PathVariable String apiKey,
+                        @RequestBody Beer beer) {
 
-        Optional<Beer> beerOptional = beerRepository.findById(idBeer);
-        if (beerOptional.isPresent()) {
-            beerRepository.deleteById(idBeer);
-            return true;
+        Optional<User> userOptional = userRepository.findUserByApiKey(apiKey);
+        if (userOptional.isPresent()) {
+            Optional<Beer> beerOptional = beerRepository.findById(idBeer);
+            if (beerOptional.isPresent()) {
+                beer.setIdBeer(idBeer);
+                return beerRepository.save(beer);
+            }
+        }
+        return null;
+    }
+
+    @DeleteMapping("/{apiKey}/beers/{idBeer}")
+    public boolean deleteBeer(@PathVariable String apiKey,
+                              @PathVariable Long idBeer) {
+
+        Optional<User> userOptional = userRepository.findUserByApiKey(apiKey);
+        if (userOptional.isPresent()) {
+            Optional<Beer> beerOptional = beerRepository.findById(idBeer);
+            if (beerOptional.isPresent()) {
+                beerRepository.deleteById(idBeer);
+                return true;
+            }
         }
         return false;
     }

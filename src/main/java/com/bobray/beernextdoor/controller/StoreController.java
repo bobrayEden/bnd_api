@@ -1,7 +1,9 @@
 package com.bobray.beernextdoor.controller;
 
 import com.bobray.beernextdoor.entity.Store;
+import com.bobray.beernextdoor.entity.User;
 import com.bobray.beernextdoor.repository.StoreRepository;
+import com.bobray.beernextdoor.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,9 @@ public class StoreController {
 
     @Autowired
     StoreRepository storeRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/stores")
     public List<Store> getAllStores() {
@@ -29,29 +34,49 @@ public class StoreController {
         return null;
     }
 
-    @PostMapping("/stores")
-    public Store postStore(@RequestBody Store store) {
-        return storeRepository.save(store);
-    }
+    @PostMapping("/{apiKey}/stores")
+    public Store postStore(@PathVariable String apiKey,
+                           @RequestBody Store store) {
 
-    @PutMapping("/store/{idStore}")
-    public Store putStore(@PathVariable Long idStore, @RequestBody Store store) {
+        Optional<User> userOptional = userRepository.findUserByApiKey(apiKey);
+        if (userOptional.isPresent()) {
 
-        Optional<Store> storeOptional = storeRepository.findById(idStore);
-        if (storeOptional.isPresent()) {
-            store.setIdStore(idStore);
             return storeRepository.save(store);
         }
         return null;
     }
 
-    @DeleteMapping("/store/{idStore}")
-    public boolean deleteStore(@PathVariable Long idStore) {
+    @PutMapping("/{apiKey}/store/{idStore}")
+    public Store putStore(@PathVariable String apiKey,
+                          @PathVariable Long idStore,
+                          @RequestBody Store store) {
 
-        Optional<Store> storeOptional = storeRepository.findById(idStore);
-        if (storeOptional.isPresent()) {
-            storeRepository.deleteById(idStore);
-            return true;
+        Optional<User> userOptional = userRepository.findUserByApiKey(apiKey);
+        if (userOptional.isPresent()) {
+
+            Optional<Store> storeOptional = storeRepository.findById(idStore);
+            if (storeOptional.isPresent()) {
+
+                store.setIdStore(idStore);
+                return storeRepository.save(store);
+            }
+        }
+        return null;
+    }
+
+    @DeleteMapping("/{apiKey}/store/{idStore}")
+    public boolean deleteStore(@PathVariable String apiKey,
+                               @PathVariable Long idStore) {
+
+        Optional<User> userOptional = userRepository.findUserByApiKey(apiKey);
+        if (userOptional.isPresent()) {
+
+            Optional<Store> storeOptional = storeRepository.findById(idStore);
+            if (storeOptional.isPresent()) {
+
+                storeRepository.deleteById(idStore);
+                return true;
+            }
         }
         return false;
     }
