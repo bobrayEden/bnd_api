@@ -2,8 +2,10 @@ package com.bobray.beernextdoor.controller;
 
 import com.bobray.beernextdoor.entity.*;
 import com.bobray.beernextdoor.repository.*;
+import com.google.common.hash.Hashing;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +37,9 @@ public class TemplateController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Value("${spring.datasource.salty}")
+    private String salt;
 
     //Mappings
     @GetMapping("/")
@@ -66,6 +72,10 @@ public class TemplateController {
 
         Optional<User> userOptional = userRepository.findByNameUser(nameUser);
         Optional<User> userOptionalMail = userRepository.findByEmail(nameUser);
+        String sha256hex = Hashing.sha256()
+                .hashString(salt + password, StandardCharsets.UTF_8)
+                .toString();
+
         if (userOptional.isPresent() || userOptionalMail.isPresent()) {
             User user;
             if (userOptional.isPresent()) {
@@ -73,7 +83,7 @@ public class TemplateController {
             } else {
                 user = userOptionalMail.get();
             }
-            if (password.equals(user.getPassword())) {
+            if (sha256hex.equals(user.getPassword())) {
                 user = getConnected(user, response);
                 session.setAttribute("user", user);
                 return "redirect:/type-form";
@@ -87,6 +97,7 @@ public class TemplateController {
                          HttpServletResponse response,
                          HttpSession session,
                          @ModelAttribute User user,
+                         @RequestParam String password,
                          @RequestParam String confirmPass) {
         out.addAttribute("user", user);
 
@@ -109,6 +120,9 @@ public class TemplateController {
                 return "redirect:/sign";
             }
             user.setApiKey(RandomStringUtils.randomAlphanumeric(20));
+            user.setPassword(Hashing.sha256()
+                    .hashString(salt + password, StandardCharsets.UTF_8)
+                    .toString());
             user = getConnected(user, response);
             session.setAttribute("user", user);
         }
@@ -137,7 +151,9 @@ public class TemplateController {
 
         //TODO gestion de l'erreur
         if (!password.equals("") && password.equals(confirmPass)) {
-            user.setPassword(password);
+            user.setPassword(Hashing.sha256()
+                    .hashString(salt + password, StandardCharsets.UTF_8)
+                    .toString());
         }
 
         if (!nameUser.equals(user.getNameUser())) {
@@ -153,7 +169,13 @@ public class TemplateController {
     }
 
     @GetMapping("/type-form")
-    public String getTypeForm(Model out) {
+    public String getTypeForm(Model out,
+                              HttpSession session) {
+
+        if (sessionCheck(session)) {
+            return "redirect:/log";
+        }
+
         List<Type> types = typeRepository.findAll();
         out.addAttribute("types", types);
         out.addAttribute("newType", new Type());
@@ -179,7 +201,13 @@ public class TemplateController {
     }
 
     @GetMapping("/brewery-form")
-    public String getBreweryForm(Model out) {
+    public String getBreweryForm(Model out,
+                                 HttpSession session) {
+
+        if (sessionCheck(session)) {
+            return "redirect:/log";
+        }
+
         List<Brewery> breweries = breweryRepository.findAll();
         out.addAttribute("breweries", breweries);
         out.addAttribute("newBrewery", new Brewery());
@@ -205,7 +233,13 @@ public class TemplateController {
     }
 
     @GetMapping("/beer-form")
-    public String getBeerForm(Model out) {
+    public String getBeerForm(Model out,
+                              HttpSession session) {
+
+        if (sessionCheck(session)) {
+            return "redirect:/log";
+        }
+
         List<Beer> beers = beerRepository.findAll();
         List<Type> types = typeRepository.findAll();
         List<Brewery> breweries = breweryRepository.findAll();
@@ -242,7 +276,13 @@ public class TemplateController {
     }
 
     @GetMapping("/store-form")
-    public String getStoreForm(Model out) {
+    public String getStoreForm(Model out,
+                               HttpSession session) {
+
+        if (sessionCheck(session)) {
+            return "redirect:/log";
+        }
+
         List<Store> stores = storeRepository.findAll();
         out.addAttribute("stores", stores);
         out.addAttribute("newStore", new Store());
@@ -274,7 +314,8 @@ public class TemplateController {
     }
 
     //Methods
-    public User getConnected(User user, HttpServletResponse response) {
+    public User getConnected(User user,
+                             HttpServletResponse response) {
         String sessionToken = RandomStringUtils.randomAlphanumeric(30);
         user.setToken(sessionToken);
         Calendar c = Calendar.getInstance();
