@@ -43,6 +43,7 @@
                 <form th:action="@{/post-beer}" method="post" th:object="${newBeer}">
                     <label th:for="idBrewery">Choisir une brasserie</label>
                     <select class="u-full-width" th:field="*{brewery.idBrewery}" th:id="idBrewery">
+                        <option selected value="0">Choisir une brasserie</option>
                         <option th:each="breweryItem : ${breweries}"
                                 th:value="${breweryItem.getIdBrewery()}"
                                 th:text="${breweryItem.getNameBrewery()}">

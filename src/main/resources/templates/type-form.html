@@ -26,25 +26,26 @@
         <div class="row">
             <div class="four columns">
                 <h4>Créer/Modifier</h4>
-                <form>
+                <form th:action="@{/post-type}" method="post">
                     <label for="typeOfBeer">Choisir</label>
-                    <select class="u-full-width" id="typeOfBeer">
+                    <select class="u-full-width" id="typeOfBeer" name="typeId">
                         <option selected value="0">Créer un type de bière</option>
                         <option th:each="type : ${types}"
                                 th:value="${type.getIdType()}"
-                                th:text="${type.getNameType()}">
+                                th:text="${type.getNameType()}"
+                                th:selected="${type.getIdType() == newType.getIdType()}">
                         </option>
                     </select>
-                    <input class="button-primary" type="submit" value="Go !">
+                    <input class="button-primary" type="submit" value="Choisir" name="chooseType">
                 </form>
             </div>
             <div class="eight columns">
                 <h4>TH:TEXT</h4>
-                <!--/*@thymesVar id="type" type=""*/-->
                 <form th:action="@{/post-type}" method="post" th:object="${newType}">
                     <label th:for="nameType">Entrer/Modifier un type</label>
                     <input class="u-full-width" th:field="*{nameType}" type="text" placeholder="Nom du type">
-                    <input class="button-primary" type="submit" value="Go !">
+                    <input type="hidden" th:field="*{idType}">
+                    <input class="button-primary" type="submit" value="Go !" name="chooseType">
                 </form>
             </div>
         </div>

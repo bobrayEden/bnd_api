@@ -170,7 +170,8 @@ public class TemplateController {
 
     @GetMapping("/type-form")
     public String getTypeForm(Model out,
-                              HttpSession session) {
+                              HttpSession session,
+                              @ModelAttribute Type newType) {
 
         if (sessionCheck(session)) {
             return "redirect:/log";
@@ -178,24 +179,37 @@ public class TemplateController {
 
         List<Type> types = typeRepository.findAll();
         out.addAttribute("types", types);
-        out.addAttribute("newType", new Type());
+        out.addAttribute("newType", newType);
         return "type-form";
     }
 
     @PostMapping("/post-type")
     public String postNewType(Model out,
-                              @ModelAttribute Type newType) {
+                              @ModelAttribute Type newType,
+                              @RequestParam(required = false, defaultValue = "") String chooseType,
+                              @RequestParam(required = false) Long typeId) {
 
-        out.addAttribute("newType", newType);
         List<Type> types = typeRepository.findAll();
         out.addAttribute("types", types);
 
-        if (newType.getNameType() != null) {
-
-            if (typeRepository.findByNameType(newType.getNameType()).isPresent()) {
+        if (chooseType.equals("Choisir")) {
+            Optional<Type> typeOptional = typeRepository.findById(typeId);
+            if (typeOptional.isPresent()) {
+                newType = typeOptional.get();
+                out.addAttribute("newType", newType);
+            } else {
+                out.addAttribute("newType", new Type());
+            }
+            return "type-form";
+        }
+        if (chooseType.equals("Go !")) {
+            if (newType.getNameType() != null && !newType.getNameType().equals("")) {
+                if (typeRepository.findByNameType(newType.getNameType()).isPresent()) {
+                    return "redirect:/type-form";
+                }
+                typeRepository.save(newType);
                 return "redirect:/type-form";
             }
-            typeRepository.save(newType);
         }
         return "redirect:/type-form";
     }
