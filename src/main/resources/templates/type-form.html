@@ -40,7 +40,7 @@
                 </form>
             </div>
             <div class="eight columns">
-                <h4>TH:TEXT</h4>
+                <h4 th:text="${newType.getIdType() == null ? 'Créer un type' : 'Modifier : ' + newType.getNameType()}">TH:TEXT</h4>
                 <form th:action="@{/post-type}" method="post" th:object="${newType}">
                     <label th:for="nameType">Entrer/Modifier un type</label>
                     <input class="u-full-width" th:field="*{nameType}" type="text" placeholder="Nom du type">

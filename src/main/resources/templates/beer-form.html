@@ -40,7 +40,7 @@
                 </form>
             </div>
             <div class="eight columns">
-                <h4>TH:TEXT</h4>
+                <h4 th:text="${newBeer.getIdBeer() == null ? 'Créer une bière' : 'Modifier : ' + newBeer.getNameBeer()}">TH:TEXT</h4>
                 <form th:action="@{/post-beer}" method="post" th:object="${newBeer}">
                     <label th:for="idBrewery">Choisir une brasserie</label>
                     <select class="u-full-width" th:field="*{brewery.idBrewery}" th:id="idBrewery">

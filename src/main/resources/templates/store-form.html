@@ -40,7 +40,7 @@
                 </form>
             </div>
             <div class="eight columns">
-                <h4>TH:TEXT</h4>
+                <h4 th:text="${newStore.getIdStore() == null ? 'Créer un magasin' : 'Modifier : ' + newStore.getNameStore()}">TH:TEXT</h4>
                 <form th:action="@{/post-store}" method="post" th:object="${newStore}">
                     <label th:for="nameStore">Entrer/Modifier un magasin</label>
                     <input class="u-full-width" th:field="*{nameStore}" type="text" placeholder="Nom du type">
