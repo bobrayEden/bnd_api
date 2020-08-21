@@ -26,24 +26,26 @@
         <div class="row">
             <div class="four columns">
                 <h4>Créer/Modifier</h4>
-                <form>
+                <form th:action="@{/post-brewery}" method="post">
                     <label for="brewery">Choisir</label>
-                    <select class="u-full-width" id="brewery">
+                    <select class="u-full-width" id="brewery" name="breweryId">
                         <option selected value="0">Créer une brasserie</option>
                         <option th:each="brewery : ${breweries}"
                                 th:value="${brewery.getIdBrewery()}"
-                                th:text="${brewery.getNameBrewery()}">
+                                th:text="${brewery.getNameBrewery()}"
+                                th:selected="${brewery.getIdBrewery() == newBrewery.getIdBrewery()}">
                         </option>
                     </select>
-                    <input class="button-primary" type="submit" value="Go !">
+                    <input class="button-primary" type="submit" value="Choisir" name="chooseBrewery">
                 </form>
             </div>
             <div class="eight columns">
-                <h4>TH:TEXT</h4>
+                <h4 th:text="${newBrewery.getIdBrewery() == null ? 'Créer une brasserie' : 'Modifier : ' + newBrewery.getNameBrewery()}">TH:TEXT</h4>
                 <form th:action="@{/post-brewery}" th:object="${newBrewery}" method="post">
                     <label th:for="nameBrewery">Entrer/Modifier une brasserie</label>
                     <input class="u-full-width" th:field="*{nameBrewery}" type="text" placeholder="Nom de la brasserie">
-                    <input class="button-primary" type="submit" value="Go !">
+                    <input type="hidden" th:field="*{idBrewery}">
+                    <input class="button-primary" type="submit" value="Go !" name="chooseBrewery">
                 </form>
             </div>
         </div>
