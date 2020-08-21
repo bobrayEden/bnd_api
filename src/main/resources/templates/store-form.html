@@ -26,16 +26,17 @@
         <div class="row">
             <div class="four columns">
                 <h4>Créer/Modifier</h4>
-                <form>
+                <form th:action="@{/post-store}" method="post">
                     <label for="store">Choisir</label>
-                    <select class="u-full-width" id="store">
+                    <select class="u-full-width" id="store" name="storeId">
                         <option selected value="0">Créer un magasin</option>
                         <option th:each="store : ${stores}"
                                 th:value="${store.getIdStore()}"
-                                th:text="${store.getNameStore()}">
+                                th:text="${store.getNameStore()}"
+                                th:selected="${store.getIdStore() == newStore.getIdStore()}">
                         </option>
                     </select>
-                    <input class="button-primary" type="submit" value="Go !">
+                    <input class="button-primary" type="submit" value="Choisir" name="chooseStore">
                 </form>
             </div>
             <div class="eight columns">
@@ -43,7 +44,8 @@
                 <form th:action="@{/post-store}" method="post" th:object="${newStore}">
                     <label th:for="nameStore">Entrer/Modifier un magasin</label>
                     <input class="u-full-width" th:field="*{nameStore}" type="text" placeholder="Nom du type">
-                    <input class="button-primary" type="submit" value="Go !">
+                    <input type="hidden" th:field="*{idStore}">
+                    <input class="button-primary" type="submit" value="Go !" name="chooseStore">
                 </form>
             </div>
         </div>

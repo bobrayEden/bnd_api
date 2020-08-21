@@ -230,18 +230,32 @@ public class TemplateController {
 
     @PostMapping("/post-brewery")
     public String postNewBrewery(Model out,
-                                 @ModelAttribute Brewery newBrewery) {
-        out.addAttribute("newBrewery", newBrewery);
+                                 @ModelAttribute Brewery newBrewery,
+                                 @RequestParam(required = false, defaultValue = "") String chooseBrewery,
+                                 @RequestParam(required = false) Long breweryId) {
+
         List<Brewery> breweries = breweryRepository.findAll();
         out.addAttribute("breweries", breweries);
 
-        if (newBrewery.getNameBrewery() != null) {
+        if (chooseBrewery.equals("Choisir")) {
+            Optional<Brewery> breweryOptional = breweryRepository.findById(breweryId);
+            if (breweryOptional.isPresent()) {
+                newBrewery = breweryOptional.get();
+                out.addAttribute("newBrewery", newBrewery);
+            } else {
+                out.addAttribute("newBrewery", new Brewery());
+            }
+            return "brewery-form";
+        }
 
-            if (breweryRepository.findByNameBrewery(newBrewery.getNameBrewery()).isPresent()) {
-                //TODO update
+        if (chooseBrewery.equals("Go !")) {
+            if (newBrewery.getNameBrewery() != null && !newBrewery.getNameBrewery().equals("")) {
+                if (breweryRepository.findByNameBrewery(newBrewery.getNameBrewery()).isPresent()) {
+                    return "redirect:/brewery-form";
+                }
+                breweryRepository.save(newBrewery);
                 return "redirect:/brewery-form";
             }
-            breweryRepository.save(newBrewery);
         }
         return "redirect:/brewery-form";
     }
@@ -266,25 +280,53 @@ public class TemplateController {
 
     @PostMapping("/post-beer")
     public String postNewBeer(Model out,
-                              @ModelAttribute Beer newBeer) {
+                              @ModelAttribute Beer newBeer,
+                              @RequestParam(required = false, defaultValue = "") String chooseBeer,
+                              @RequestParam(required = false) Long beerId) {
 
-        out.addAttribute("newBeer", newBeer);
         List<Beer> beers = beerRepository.findAll();
+        List<Brewery> breweries = breweryRepository.findAll();
+        List<Type> types = typeRepository.findAll();
         out.addAttribute("beers", beers);
+        out.addAttribute("breweries", breweries);
+        out.addAttribute("types", types);
 
-        if (newBeer.getNameBeer() != null) {
-
-            if (beerRepository.findByNameBeer(newBeer.getNameBeer()).isPresent()) {
+        if (chooseBeer.equals("Choisir")) {
+            Optional<Beer> beerOptional = beerRepository.findById(beerId);
+            if (beerOptional.isPresent()) {
+                newBeer = beerOptional.get();
+                out.addAttribute("newBeer", newBeer);
+            } else {
+                out.addAttribute("newBeer", new Beer());
+            }
+            return "beer-form";
+        }
+        //TODO renvoyer erreur pour brasserie/type manquants ou nom de bière déjà existant
+        if (chooseBeer.equals("Go !")) {
+            if (newBeer.getIdBeer() == null) {
+                Optional<Beer> beerOptional = beerRepository.findByNameBeer(newBeer.getNameBeer());
+                if (beerOptional.isPresent()) {
+                    return "redirect:/beer-form";
+                }
+            }
+            Optional<Brewery> breweryOptional = breweryRepository.findById(newBeer.getBrewery().getIdBrewery());
+            if (breweryOptional.isPresent()) {
+                Brewery currentBrewery = breweryOptional.get();
+                newBeer.setBrewery(currentBrewery);
+            } else {
                 return "redirect:/beer-form";
             }
-
-            Brewery currentBrewery = breweryRepository.findById(newBeer.getBrewery().getIdBrewery()).get();
-            newBeer.setBrewery(currentBrewery);
-
-            Type currentType = typeRepository.findById(newBeer.getType().getIdType()).get();
-            newBeer.setType(currentType);
-
-            beerRepository.save(newBeer);
+            Optional<Type> typeOptional = typeRepository.findById(newBeer.getType().getIdType());
+            if (typeOptional.isPresent()) {
+                Type currentType = typeOptional.get();
+                newBeer.setType(currentType);
+            } else {
+                return "redirect:/beer-form";
+            }
+            if (newBeer.getNameBeer() != null && !newBeer.getNameBeer().equals("")) {
+                beerRepository.save(newBeer);
+                return "redirect:/beer-form";
+            }
         }
         return "redirect:/beer-form";
     }
@@ -305,18 +347,31 @@ public class TemplateController {
 
     @PostMapping("/post-store")
     public String postNewStore(Model out,
-                               @ModelAttribute Store newStore) {
+                               @ModelAttribute Store newStore,
+                               @RequestParam(required = false, defaultValue = "") String chooseStore,
+                               @RequestParam(required = false) Long storeId) {
 
-        out.addAttribute("newStore", newStore);
         List<Store> stores = storeRepository.findAll();
         out.addAttribute("stores", stores);
 
-        if (newStore.getNameStore() != null) {
-
-            if (storeRepository.findByNameStore(newStore.getNameStore()).isPresent()) {
-                return "redirect:/store-form";
+        if (chooseStore.equals("Choisir")) {
+            Optional<Store> storeOptional = storeRepository.findById(storeId);
+            if (storeOptional.isPresent()) {
+                newStore = storeOptional.get();
+                out.addAttribute("newStore", newStore);
+            } else {
+                out.addAttribute("newStore", new Store());
             }
-            storeRepository.save(newStore);
+            return "store-form";
+        }
+
+        if (chooseStore.equals("Go !")) {
+            if (newStore.getNameStore() != null && !newStore.getNameStore().equals("")) {
+                if (storeRepository.findByNameStore(newStore.getNameStore()).isPresent()) {
+                    return "redirect:/store-form";
+                }
+                storeRepository.save(newStore);
+            }
         }
         return "redirect:/store-form";
     }
