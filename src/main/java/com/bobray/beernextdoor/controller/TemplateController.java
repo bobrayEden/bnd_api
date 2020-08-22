@@ -65,7 +65,8 @@ public class TemplateController {
     }
 
     @PostMapping("/connexion")
-    public String connexion(HttpServletResponse response,
+    public String connexion(Model out,
+                            HttpServletResponse response,
                             HttpSession session,
                             @RequestParam String nameUser,
                             @RequestParam String password) {
@@ -89,6 +90,7 @@ public class TemplateController {
                 return "redirect:/type-form";
             }
         }
+        out.addAttribute("logError", true);
         return "log";
     }
 
@@ -104,20 +106,28 @@ public class TemplateController {
         if (user.getNameUser() != null) {
             Optional<User> userOptional = userRepository.findByNameUser(user.getNameUser());
             if (userOptional.isPresent()) {
-                return "redirect:/sign";
+                out.addAttribute("user", user);
+                out.addAttribute("userNamePresent", true);
+                return "sign";
             }
 
             userOptional = userRepository.findByEmail(user.getEmail());
             if (userOptional.isPresent()) {
-                return "redirect:/sign";
+                out.addAttribute("user", user);
+                out.addAttribute("userMailPresent", true);
+                return "sign";
             }
 
             if (user.getNameUser().trim().equals("")) {
-                return "redirect:/sign";
+                out.addAttribute("user", user);
+                out.addAttribute("userNameBlank", true);
+                return "sign";
             }
 
             if (!user.getPassword().equals(confirmPass)) {
-                return "redirect:/sign";
+                out.addAttribute("user", user);
+                out.addAttribute("pwError", true);
+                return "sign";
             }
             user.setApiKey(RandomStringUtils.randomAlphanumeric(20));
             user.setPassword(Hashing.sha256()
@@ -148,21 +158,46 @@ public class TemplateController {
 
         User user = (User) session.getAttribute("user");
         out.addAttribute("user", user);
-
+        boolean pwError = false;
+        boolean namePresent = false;
+        boolean mailPresent = false;
         //TODO gestion de l'erreur
-        if (!password.equals("") && password.equals(confirmPass)) {
-            user.setPassword(Hashing.sha256()
-                    .hashString(salt + password, StandardCharsets.UTF_8)
-                    .toString());
+
+        if (!password.equals("")) {
+            if (password.equals(confirmPass)) {
+                user.setPassword(Hashing.sha256()
+                        .hashString(salt + password, StandardCharsets.UTF_8)
+                        .toString());
+            } else {
+                pwError = true;
+            }
         }
 
         if (!nameUser.equals(user.getNameUser())) {
+            Optional<User> userOptional = userRepository.findByNameUser(nameUser);
+            if (userOptional.isPresent()) {
+                namePresent = true;
+            }
             user.setNameUser(nameUser);
         }
 
         if (!email.equals(user.getEmail())) {
+            Optional<User> userOptional = userRepository.findByEmail(email);
+            if (userOptional.isPresent()) {
+                mailPresent = true;
+            }
             user.setEmail(email);
         }
+
+        if (pwError || namePresent || mailPresent) {
+            //TODO renvoyer l'utilisateur de la session ?
+            out.addAttribute("user", user);
+            out.addAttribute("pwError", pwError);
+            out.addAttribute("namePresent", namePresent);
+            out.addAttribute("mailPresent", mailPresent);
+            return "user-profile";
+        }
+
         userRepository.saveAndFlush(user);
         session.setAttribute("user", user);
         return "redirect:/user-profile";
@@ -205,7 +240,9 @@ public class TemplateController {
         if (chooseType.equals("Go !")) {
             if (newType.getNameType() != null && !newType.getNameType().equals("")) {
                 if (typeRepository.findByNameType(newType.getNameType()).isPresent()) {
-                    return "redirect:/type-form";
+                    out.addAttribute("newType", new Type());
+                    out.addAttribute("typePresent", true);
+                    return "type-form";
                 }
                 typeRepository.save(newType);
                 return "redirect:/type-form";
@@ -251,7 +288,9 @@ public class TemplateController {
         if (chooseBrewery.equals("Go !")) {
             if (newBrewery.getNameBrewery() != null && !newBrewery.getNameBrewery().equals("")) {
                 if (breweryRepository.findByNameBrewery(newBrewery.getNameBrewery()).isPresent()) {
-                    return "redirect:/brewery-form";
+                    out.addAttribute("newBrewery", new Brewery());
+                    out.addAttribute("breweryPresent", true);
+                    return "brewery-form";
                 }
                 breweryRepository.save(newBrewery);
                 return "redirect:/brewery-form";
@@ -283,7 +322,7 @@ public class TemplateController {
                               @ModelAttribute Beer newBeer,
                               @RequestParam(required = false, defaultValue = "") String chooseBeer,
                               @RequestParam(required = false) Long beerId) {
-
+        //TODO refactor les erreurs pour ne faire qu'un retour
         List<Beer> beers = beerRepository.findAll();
         List<Brewery> breweries = breweryRepository.findAll();
         List<Type> types = typeRepository.findAll();
@@ -301,12 +340,14 @@ public class TemplateController {
             }
             return "beer-form";
         }
-        //TODO renvoyer erreur pour brasserie/type manquants ou nom de bière déjà existant
+
         if (chooseBeer.equals("Go !")) {
             if (newBeer.getIdBeer() == null) {
                 Optional<Beer> beerOptional = beerRepository.findByNameBeer(newBeer.getNameBeer());
                 if (beerOptional.isPresent()) {
-                    return "redirect:/beer-form";
+                    out.addAttribute("newBeer", new Beer());
+                    out.addAttribute("beerPresent", true);
+                    return "beer-form";
                 }
             }
             Optional<Brewery> breweryOptional = breweryRepository.findById(newBeer.getBrewery().getIdBrewery());
@@ -314,14 +355,26 @@ public class TemplateController {
                 Brewery currentBrewery = breweryOptional.get();
                 newBeer.setBrewery(currentBrewery);
             } else {
-                return "redirect:/beer-form";
+                if (newBeer.getIdBeer() == null) {
+                    out.addAttribute("newBeer", new Beer());
+                } else {
+                    out.addAttribute("newBeer", newBeer);
+                }
+                out.addAttribute("breweryMissing", true);
+                return "beer-form";
             }
             Optional<Type> typeOptional = typeRepository.findById(newBeer.getType().getIdType());
             if (typeOptional.isPresent()) {
                 Type currentType = typeOptional.get();
                 newBeer.setType(currentType);
             } else {
-                return "redirect:/beer-form";
+                if (newBeer.getIdBeer() == null) {
+                    out.addAttribute("newBeer", new Beer());
+                } else {
+                    out.addAttribute("newBeer", newBeer);
+                }
+                out.addAttribute("typeMissing", true);
+                return "beer-form";
             }
             if (newBeer.getNameBeer() != null && !newBeer.getNameBeer().equals("")) {
                 beerRepository.save(newBeer);
@@ -368,7 +421,9 @@ public class TemplateController {
         if (chooseStore.equals("Go !")) {
             if (newStore.getNameStore() != null && !newStore.getNameStore().equals("")) {
                 if (storeRepository.findByNameStore(newStore.getNameStore()).isPresent()) {
-                    return "redirect:/store-form";
+                    out.addAttribute("newStore", new Store());
+                    out.addAttribute("storePresent", true);
+                    return "store-form";
                 }
                 storeRepository.save(newStore);
             }

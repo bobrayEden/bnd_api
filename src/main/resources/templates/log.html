@@ -29,6 +29,7 @@
                 <input type="text" id="nameUser" name="nameUser"/>
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password"/>
+                <p th:if="${logError}">L'identifiant et le mot de passe ne correspondent pas</p>
                 <input type="submit" value="Go" name="logInUser">
             </form>
         </div>

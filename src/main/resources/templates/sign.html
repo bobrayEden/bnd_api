@@ -27,12 +27,16 @@
             <form th:action="@{/sign-in}" method="post" th:object="${user}">
                 <label th:for="nameUser">User Name</label>
                 <input type="text" th:field="*{nameUser}"/>
+                <p th:if="${userNamePresent}">Le nom d'utilisateur est déjà utilisé</p>
+                <p th:if="${userNameBlank}">Renseigner un nom d'utilisateur</p>
                 <label th:for="email">E-mail</label>
                 <input type="text" th:field="*{email}"/>
+                <p th:if="${userMailPresent}">Ce mail possède déjà un compte</p>
                 <label th:for="password">Password</label>
                 <input type="password" th:field="*{password}"/>
                 <label for="confirmPass">Password confirmation</label>
                 <input id="confirmPass" type="password" name="confirmPass"/>
+                <p th:if="${pwError}">Les mots de passe ne correspondent pas</p>
                 <input type="submit" value="Go" name="registerUser">
             </form>
         </div>
