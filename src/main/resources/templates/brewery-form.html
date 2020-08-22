@@ -44,6 +44,7 @@
                 <form th:action="@{/post-brewery}" th:object="${newBrewery}" method="post">
                     <label th:for="nameBrewery">Entrer/Modifier une brasserie</label>
                     <input class="u-full-width" th:field="*{nameBrewery}" type="text" placeholder="Nom de la brasserie">
+                    <p th:if="${breweryPresent}">La brasserie existe déjà</p>
                     <input type="hidden" th:field="*{idBrewery}">
                     <input class="button-primary" type="submit" value="Go !" name="chooseBrewery">
                 </form>
