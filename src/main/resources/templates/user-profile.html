@@ -21,23 +21,26 @@
     <div class="container">
         <div class="row">
             <h3>Profil utilisateur</h3>
+            <h4 th:text="${'(Clé API : ' + user.getApiKey() + ')'}"></h4>
         </div>
         <div class="row">
             <form th:action="@{/update-profile}" method="post" th:object="${user}">
                 <div class="six columns">
                     <label th:for="nameUser">Nom d'utilisateur</label>
                     <input type="text" th:field="*{nameUser}" placeholder="Georges">
-                    <p th:if="${namePresent}">Le nom est déjà utilisé</p>
+                    <p class="error-message" th:if="${namePresent}">Le nom est déjà utilisé</p>
                     <label th:for="email">E-mail</label>
                     <input type="email" th:field="*{email}" placeholder="georges@georges.com">
-                    <p th:if="${mailPresent}">Le mail est déjà utilisé</p>
+                    <p class="error-message" th:if="${mailPresent}">Le mail est déjà utilisé</p>
                 </div>
                 <div class="six columns">
                     <label th:for="password">Mot de passe</label>
                     <input type="password" th:field="*{password}">
+                    <p class="error-message" th:if="${pwError}">Le mot de passe ne correspond pas</p>
                     <label for="confirmPass">Confirmer le mot de passe</label>
                     <input id="confirmPass" type="password" name="confirmPass">
-                    <p th:if="${pwError}">Le mot de passe ne correspond pas</p>
+                </div>
+                <div class="twelve columns">
                     <input class="button-primary" type="submit" value="Go !">
                 </div>
             </form>

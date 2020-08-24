@@ -51,7 +51,7 @@
                                 th:selected="${breweryItem.getIdBrewery() == newBeer.getBrewery().getIdBrewery()}">
                         </option>
                     </select>
-                    <p th:if="${breweryMissing}">Renseigner une brasserie</p>
+                    <p class="error-message" th:if="${breweryMissing}">Renseigner une brasserie</p>
                     <label th:for="idType">Choisir un type de bière</label>
                     <select class="u-full-width" th:field="*{type.idType}" th:id="idType">
                         <option selected value="0">Choisir un type</option>
@@ -61,10 +61,11 @@
                                 th:selected="${typeItem.getIdType() == newBeer.getType().getIdType()}">
                         </option>
                     </select>
-                    <p th:if="${typeMissing}">Renseigner un type</p>
+                    <p class="error-message" th:if="${typeMissing}">Renseigner un type</p>
                     <label th:for="nameBeer">Entrer/Modifier le nom de la bière</label>
                     <input class="u-full-width" th:field="*{nameBeer}" type="text" placeholder="Nom de la bière">
-                    <p th:if="${beerPresent}">La bière existe déjà</p>
+                    <p class="error-message" th:if="${beerPresent}">La bière existe déjà</p>
+                    <p class="error-message" th:if="${beerNameBlank}">Renseigner un nom de bière</p>
                     <input type="hidden" th:field="*{idBeer}">
                     <input class="button-primary" type="submit" value="Go !" name="chooseBeer">
                 </form>

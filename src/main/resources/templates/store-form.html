@@ -44,7 +44,7 @@
                 <form th:action="@{/post-store}" method="post" th:object="${newStore}">
                     <label th:for="nameStore">Entrer/Modifier un magasin</label>
                     <input class="u-full-width" th:field="*{nameStore}" type="text" placeholder="Nom du type">
-                    <p th:if="${storePresent}">Le magasin existe déjà</p>
+                    <p class="error-message" th:if="${storePresent}">Le magasin existe déjà</p>
                     <input type="hidden" th:field="*{idStore}">
                     <input class="button-primary" type="submit" value="Go !" name="chooseStore">
                 </form>

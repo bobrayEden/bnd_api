@@ -1,3 +1,7 @@
+body {
+    background-color: #eeeeee;
+}
+
 .logo-div{
     height: 150px;
     display: flex;
@@ -17,10 +21,30 @@
     align-items: center;
 }
 
+.flex > a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #008000;
+}
+
+.flex > a:hover {
+    color: #000000;
+    text-decoration: underline;
+}
+
+.link-index {
+    height: 70px;
+}
+
 .flex-title {
     height: 150px;
     display: flex;
     align-items: center;
+    color: #008000;
+}
+
+h4 {
+    color: #008000;
 }
 
 .section {
@@ -31,6 +55,15 @@
     padding: 0 0 5rem 0;
 }
 
-td>p {
+td > p {
     margin: 1.25rem 0;
+}
+
+.error-message {
+    color: orangered;
+    font-weight: bold;
+}
+
+.log-link {
+    padding: 0 0 2rem 0;
 }
