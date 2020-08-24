@@ -18,25 +18,26 @@
 <div class="section">
     <div class="container">
         <div class="row">
-            <h2>Account creation</h2>
+            <h2>Inscription</h2>
         </div>
         <div class="row">
-            <a th:href="@{/log}">I already have an account</a>
+            <a th:href="@{/log}">J'ai déjà un compte</a>
         </div>
         <div class="row">
             <form th:action="@{/sign-in}" method="post" th:object="${user}">
-                <label th:for="nameUser">User Name</label>
+                <label th:for="nameUser">Nom d'utilisateur</label>
                 <input type="text" th:field="*{nameUser}"/>
-                <p th:if="${userNamePresent}">Le nom d'utilisateur est déjà utilisé</p>
-                <p th:if="${userNameBlank}">Renseigner un nom d'utilisateur</p>
+                <p class="error-message" th:if="${userNamePresent}">Le nom d'utilisateur est déjà utilisé</p>
+                <p class="error-message" th:if="${userNameBlank}">Renseigner un nom d'utilisateur</p>
                 <label th:for="email">E-mail</label>
                 <input type="text" th:field="*{email}"/>
-                <p th:if="${userMailPresent}">Ce mail possède déjà un compte</p>
-                <label th:for="password">Password</label>
+                <p class="error-message" th:if="${userMailPresent}">Ce mail possède déjà un compte</p>
+                <p class="error-message" th:if="${userMailBlank}">Renseigner un e-mail</p>
+                <label th:for="password">Mot de passe</label>
                 <input type="password" th:field="*{password}"/>
-                <label for="confirmPass">Password confirmation</label>
+                <p class="error-message" th:if="${pwError}">Les mots de passe ne correspondent pas</p>
+                <label for="confirmPass">Confirmer le mot de passe</label>
                 <input id="confirmPass" type="password" name="confirmPass"/>
-                <p th:if="${pwError}">Les mots de passe ne correspondent pas</p>
                 <input type="submit" value="Go" name="registerUser">
             </form>
         </div>

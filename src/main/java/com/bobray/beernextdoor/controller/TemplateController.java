@@ -101,32 +101,44 @@ public class TemplateController {
                          @ModelAttribute User user,
                          @RequestParam String password,
                          @RequestParam String confirmPass) {
+
         out.addAttribute("user", user);
+        boolean userNamePresent = false;
+        boolean userMailPresent = false;
+        boolean userNameBlank = false;
+        boolean userMailBlank = false;
+        boolean pwError = false;
 
         if (user.getNameUser() != null) {
             Optional<User> userOptional = userRepository.findByNameUser(user.getNameUser());
             if (userOptional.isPresent()) {
-                out.addAttribute("user", user);
-                out.addAttribute("userNamePresent", true);
-                return "sign";
+                userNamePresent = true;
             }
 
             userOptional = userRepository.findByEmail(user.getEmail());
             if (userOptional.isPresent()) {
-                out.addAttribute("user", user);
-                out.addAttribute("userMailPresent", true);
-                return "sign";
+                userMailPresent = true;
             }
 
             if (user.getNameUser().trim().equals("")) {
-                out.addAttribute("user", user);
-                out.addAttribute("userNameBlank", true);
-                return "sign";
+                userNameBlank = true;
+            }
+
+            if (user.getEmail().trim().equals("")) {
+                userMailBlank = true;
             }
 
             if (!user.getPassword().equals(confirmPass)) {
+                pwError = true;
+            }
+
+            if (userNamePresent || userMailPresent || userMailBlank || userNameBlank || pwError) {
                 out.addAttribute("user", user);
-                out.addAttribute("pwError", true);
+                out.addAttribute("userNamePresent", userNamePresent);
+                out.addAttribute("userMailPresent", userMailPresent);
+                out.addAttribute("userNameBlank", userNameBlank);
+                out.addAttribute("userMailBlank", userMailBlank);
+                out.addAttribute("pwError", pwError);
                 return "sign";
             }
             user.setApiKey(RandomStringUtils.randomAlphanumeric(20));
@@ -341,13 +353,16 @@ public class TemplateController {
             return "beer-form";
         }
 
+        boolean beerPresent = false;
+        boolean breweryMissing = false;
+        boolean typeMissing = false;
+        boolean beerNameBlank = false;
+
         if (chooseBeer.equals("Go !")) {
             if (newBeer.getIdBeer() == null) {
                 Optional<Beer> beerOptional = beerRepository.findByNameBeer(newBeer.getNameBeer());
                 if (beerOptional.isPresent()) {
-                    out.addAttribute("newBeer", new Beer());
-                    out.addAttribute("beerPresent", true);
-                    return "beer-form";
+                    beerPresent = true;
                 }
             }
             Optional<Brewery> breweryOptional = breweryRepository.findById(newBeer.getBrewery().getIdBrewery());
@@ -355,28 +370,33 @@ public class TemplateController {
                 Brewery currentBrewery = breweryOptional.get();
                 newBeer.setBrewery(currentBrewery);
             } else {
-                if (newBeer.getIdBeer() == null) {
-                    out.addAttribute("newBeer", new Beer());
-                } else {
-                    out.addAttribute("newBeer", newBeer);
-                }
-                out.addAttribute("breweryMissing", true);
-                return "beer-form";
+                breweryMissing = true;
             }
             Optional<Type> typeOptional = typeRepository.findById(newBeer.getType().getIdType());
             if (typeOptional.isPresent()) {
                 Type currentType = typeOptional.get();
                 newBeer.setType(currentType);
             } else {
+                typeMissing = true;
+            }
+
+            if (newBeer.getNameBeer().trim().equals("")) {
+                beerNameBlank = true;
+            }
+
+            if (beerPresent || beerNameBlank || breweryMissing || typeMissing) {
                 if (newBeer.getIdBeer() == null) {
                     out.addAttribute("newBeer", new Beer());
                 } else {
                     out.addAttribute("newBeer", newBeer);
                 }
-                out.addAttribute("typeMissing", true);
+                out.addAttribute("beerPresent", beerPresent);
+                out.addAttribute("beerNameBlank", beerNameBlank);
+                out.addAttribute("breweryMissing", breweryMissing);
+                out.addAttribute("typeMissing", typeMissing);
                 return "beer-form";
             }
-            if (newBeer.getNameBeer() != null && !newBeer.getNameBeer().equals("")) {
+            else {
                 beerRepository.save(newBeer);
                 return "redirect:/beer-form";
             }
