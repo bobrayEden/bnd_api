@@ -20,7 +20,7 @@
         <div class="row">
             <h2>Identification</h2>
         </div>
-        <div class="row">
+        <div class="row log-link">
             <a th:href="@{/sign}">Je n'ai pas de compte</a>
         </div>
         <div class="row">
@@ -30,7 +30,9 @@
                 <label for="password">Mot de passe</label>
                 <input type="password" id="password" name="password"/>
                 <p class="error-message" th:if="${logError}">L'identifiant et le mot de passe ne correspondent pas</p>
-                <input type="submit" value="Go" name="logInUser">
+                <div>
+                    <input type="submit" value="Go" name="logInUser">
+                </div>
             </form>
         </div>
     </div>

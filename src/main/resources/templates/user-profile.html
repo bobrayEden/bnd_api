@@ -21,6 +21,7 @@
     <div class="container">
         <div class="row">
             <h3>Profil utilisateur</h3>
+            <h4 th:text="${'(Clé API : ' + user.getApiKey() + ')'}"></h4>
         </div>
         <div class="row">
             <form th:action="@{/update-profile}" method="post" th:object="${user}">
@@ -40,7 +41,6 @@
                     <input id="confirmPass" type="password" name="confirmPass">
                 </div>
                 <div class="twelve columns">
-                    <p th:text="${'Clé API : ' + user.getApiKey()}"></p>
                     <input class="button-primary" type="submit" value="Go !">
                 </div>
             </form>

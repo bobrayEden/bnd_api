@@ -32,6 +32,10 @@ body {
     text-decoration: underline;
 }
 
+.link-index {
+    height: 70px;
+}
+
 .flex-title {
     height: 150px;
     display: flex;
@@ -58,4 +62,8 @@ td > p {
 .error-message {
     color: orangered;
     font-weight: bold;
+}
+
+.log-link {
+    padding: 0 0 2rem 0;
 }

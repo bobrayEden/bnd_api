@@ -20,7 +20,7 @@
         <div class="row">
             <h2>Inscription</h2>
         </div>
-        <div class="row">
+        <div class="row log-link">
             <a th:href="@{/log}">J'ai déjà un compte</a>
         </div>
         <div class="row">
@@ -38,9 +38,11 @@
                 <p class="error-message" th:if="${pwError}">Les mots de passe ne correspondent pas</p>
                 <label for="confirmPass">Confirmer le mot de passe</label>
                 <input id="confirmPass" type="password" name="confirmPass"/>
-                <input type="submit" value="Go" name="registerUser">
+                <div>
+                    <input type="submit" value="Go" name="registerUser">
+                </div>
             </form>
-        </div>
+    </div>
     </div>
 </div>
 <!-- Fragment Footer-->
