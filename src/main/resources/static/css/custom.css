@@ -21,13 +21,13 @@ body {
     align-items: center;
 }
 
-.flex > a {
+.flex > a, li > a {
     font-weight: bold;
     text-decoration: none;
     color: #008000;
 }
 
-.flex > a:hover {
+.flex > a:hover, li > a:hover {
     color: #000000;
     text-decoration: underline;
 }
@@ -52,6 +52,7 @@ h4 {
 }
 
 .section-mid {
+    min-height: 70vh;
     padding: 0 0 5rem 0;
 }
 
@@ -66,4 +67,18 @@ td > p {
 
 .log-link {
     padding: 0 0 2rem 0;
+}
+
+.menu {
+    position: fixed;
+}
+
+.menu > li {
+    list-style: none;
+}
+
+.footer {
+    background-color: #008000;
+    color: #eeeeee;
+    font-weight: bold;
 }
