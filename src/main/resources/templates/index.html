@@ -14,14 +14,16 @@
 </head>
 <body>
 
-<div th:replace="fragment.html :: head"></div>
+<div id="top" th:replace="fragment.html :: head"></div>
 <div class="section">
     <div class="container">
         <div class="row">
             <div class="twelve columns">
-                <p>Mais qu'est-ce donc que BND ? Holala, mais c'est vraiment trop intéressant ! Lorem ipsum dolore et
-                    cetera ! Lorem ipsum dolore et cetera Lorem ipsum dolore et cetera Lorem ipsum dolore et cetera
-                    Lorem ipsum dolore et cetera</p>
+                <p>Beer Next Door est un projet d'application web permettant à ses usagers de localiser
+                    autour d'eux des détaillants vendant des bières artisanales.</p>
+                <p>En se connectant à Beer Next Door, l'usager est localisé et celui-ci peut consulter
+                    les étalages des magasins alentours.</p>
+                <p>BND: API est l'interface d'administration de la base de données de Beer Next Door.</p>
             </div>
         </div>
     </div>
@@ -41,11 +43,320 @@
 <div class="section">
     <div class="container">
         <div class="row">
-            <div class="four columns">
-                <p>C'est le menu de navigation dans la documentation</p>
+            <div class="three columns">
+                <p>  </p>
+                <ul class="menu">
+                    <li><a href="#beerTypes">Types de bières</a></li>
+                    <li><a href="#breweries">Brasseries</a></li>
+                    <li><a href="#beers">Bières</a></li>
+                    <li><a href="#stores">Magasins</a></li>
+                    <li><a href="#top">Haut de page</a></li>
+                </ul>
             </div>
-            <div class="eight columns">
-                <p>C'est la documentation</p>
+            <div class="nine columns">
+                <h2>Documentation</h2>
+                <p>La documentation présente les routes d'API de Beer Next Door.</p>
+                <p>Les requêtes en GET ne nécessitent pas de clef d'API.</p>
+                <p>En revanche, une clef d'API est nécessaire pour ajouter/modifier des entrées à la base de données.
+                    Cette clef vous est fournie en vous inscrivant à BND: API. Vous pouvez la retrouver sur votre page
+                    profil.</p>
+                <h3 id="beerTypes">Types de bières</h3>
+                <h4>@GetMapping("types")</h4>
+                <p>Format de réponse : une liste d'entités Type.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                            "idType": 1,
+                            "nameType": "Pilsner"
+                        },
+                        {
+                            "idType": 2,
+                            "nameType": "Stout"
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@GetMapping("types/{idType}")</h4>
+                <p>Format de réponse : une entité Type.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                        "idType": 1,
+                          "nameType": "Pilsner"
+                          }
+                        ]
+                    </code>
+                </pre>
+                <h4>@PostMapping("{apiKey}/types")</h4>
+                <p>Format d'envoi : une entité Type sans ID.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                        "nameType": "New BeerType"
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@PutMapping("{apiKey}/types/{idType}")</h4>
+                <p>Format d'envoi : une entité Type sans ID.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                        "nameType": "New BeerType Modified"
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@DeleteMapping("{apiKey}/types/{idType}")</h4>
+                <p>Format de réponse : un booléen</p>
+                <ul>
+                    <li>
+                        <pre>true</pre>
+                        La suppression est effective.
+                    </li>
+                    <li>
+                        <pre>false</pre>
+                        La suppression n'a pas été effectuée.
+                    </li>
+                </ul>
+                <h3 id="breweries">Brasseries</h3>
+                <h4>@GetMapping("breweries")</h4>
+                <p>Format de réponse : une liste d'entités Brewery.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                            "idBrewery": 1,
+                            "nameBrewery": "Brooklyn"
+                        },
+                        {
+                            "idBrewery": 2,
+                            "nameBrewery": "Leopold"
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@GetMapping("breweries/{idBrewery}")</h4>
+                <p>Format de réponse : une entité Brewery.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                            "idBrewery": 1,
+                            "nameBrewery": "Brooklyn"
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@PostMapping("{apiKey}/breweries")</h4>
+                <p>Format d'envoi : une entité Brewery sans ID.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                            "nameBrewery": "New Brewery"
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@PutMapping("{apiKey}/breweries/{idBrewery}")</h4>
+                <p>Format d'envoi : une entité Brewery sans ID.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                            "nameBrewery": "New Brewery Modified"
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@DeleteMapping("{apiKey}/breweries/{idBrewery}")</h4>
+                <p>Format de réponse : un booléen</p>
+                <ul>
+                    <li>
+                        <pre>true</pre>
+                        La suppression est effective.
+                    </li>
+                    <li>
+                        <pre>false</pre>
+                        La suppression n'a pas été effectuée.
+                    </li>
+                </ul>
+                <h3 id="beers">Bières</h3>
+                <h4>@GetMapping("beers")</h4>
+                <p>Format de réponse : une liste d'entités Beer.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                            "idBeer": 1,
+                            "nameBeer": "Lager",
+                            "type": {
+                                "idType": 4,
+                                "nameType": "Lager"
+                            },
+                            "brewery": {
+                                "idBrewery": 1,
+                                "nameBrewery": "Brooklyn"
+                            }
+                        },
+                        {
+                            "idBeer": 2,
+                            "nameBeer": "Defender",
+                            "type": {
+                                "idType": 3,
+                                "nameType": "Indian Pale Ale"
+                            },
+                            "brewery": {
+                                "idBrewery": 1,
+                                "nameBrewery": "Brooklyn"
+                            }
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@GetMapping("beers/{idBeer}")</h4>
+                <p>Format de réponse : une entité Beer.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                            "idBeer": 1,
+                            "nameBeer": "Lager",
+                            "type": {
+                                "idType": 4,
+                                "nameType": "Lager"
+                            },
+                            "brewery": {
+                                "idBrewery": 1,
+                                "nameBrewery": "Brooklyn"
+                            }
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@PostMapping("{apiKey}/beers")</h4>
+                <p>Format d'envoi : une entité Beer sans ID.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                            "nameBeer": "New Beer",
+                            "type": {
+                                "idType": 4,
+                                "nameType": "Lager"
+                            },
+                            "brewery": {
+                                "idBrewery": 1,
+                                "nameBrewery": "Brooklyn"
+                            }
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@PutMapping("{apiKey}/beers/{idBeer}")</h4>
+                <p>Format d'envoi : une entité Beer sans ID.</p>
+                <pre>
+                    <code>
+                        [
+                         {
+                            "nameBeer": "New Beer Modified",
+                            "type": {
+                                "idType": 4,
+                                "nameType": "Lager"
+                            },
+                            "brewery": {
+                                "idBrewery": 1,
+                                "nameBrewery": "Brooklyn"
+                            }
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@DeleteMapping("{apiKey}/beers/{idBeer}")</h4>
+                <p>Format de réponse : un booléen</p>
+                <ul>
+                    <li>
+                        <pre>true</pre>
+                        La suppression est effective.
+                    </li>
+                    <li>
+                        <pre>false</pre>
+                        La suppression n'a pas été effectuée.
+                    </li>
+                </ul>
+                <h3 id="stores">Magasins</h3>
+                <h4>@GetMapping("stores")</h4>
+                <p>Format de réponse : une liste d'entités Store.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                            "idStore": 1,
+                            "nameStore": "La Carrouf d'à côté",
+                            "storeBeers": []
+                        },
+                        {
+                            "idStore": 2,
+                            "nameStore": "Chez Jeannot Lapin",
+                            "storeBeers": []
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@GetMapping("stores/{idStores}")</h4>
+                <p>Format de réponse : une entité Store.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                            "idStore": 1,
+                            "nameStore": "La Carrouf d'à côté",
+                            "storeBeers": []
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@PostMapping("{apiKey}/stores")</h4>
+                <p>Format d'envoi : une entité Store sans ID.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                            "nameStore": "New Store",
+                            "storeBeers": []
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@PutMapping("{apiKey}/stores/{idStore}")</h4>
+                <p>Format d'envoi : une entité Store sans ID.</p>
+                <pre>
+                    <code>
+                        [
+                        {
+                            "nameStore": "New Store Modified",
+                            "storeBeers": []
+                        }
+                        ]
+                    </code>
+                </pre>
+                <h4>@DeleteMapping("{apiKey}/stores/{idStore}")</h4>
+                <p>Format de réponse : un booléen</p>
+                <ul>
+                    <li>
+                        <pre>true</pre>
+                        La suppression est effective.
+                    </li>
+                    <li>
+                        <pre>false</pre>
+                        La suppression n'a pas été effectuée.
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
